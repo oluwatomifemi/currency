@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Currency Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      background-color: #fff;
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    .form-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .form-container input[type="number"] {
+      padding: 5px;
+      width: 120px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      font-size: 14px;
+      text-align: center;
+      outline: none;
+    }
+    .form-container select {
+      padding: 5px;
+      width: 120px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      font-size: 14px;
+      outline: none;
+    }
+    .result {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .btn-container {
+      margin-bottom: 20px;
+    }
+    .btn-container button {
+      padding: 10px 20px;
+      margin: 0 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Currency Converter</h1>
+
+    <div class="form-container">
+      <input type="number" id="amountInput" placeholder="Enter amount">
+      <select id="fromCurrency">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+      </select>
+      <select id="toCurrency">
+        <option value="EUR">EUR</option>
+        <option value="USD">USD</option>
+        <option value="GBP">GBP</option>
+      </select>
+    </div>
+
+    <div class="result" id="convertedAmount"></div>
+
+    <div class="btn-container">
+      <button id="convertButton">Convert</button>
+      <button id="resetButton">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    const convertButton = document.getElementById('convertButton');
+    const resetButton = document.getElementById('resetButton');
+    const amountInput = document.getElementById('amountInput');
+    const fromCurrencySelect = document.getElementById('fromCurrency');
+    const toCurrencySelect = document.getElementById('toCurrency');
+    const convertedAmountDisplay = document.getElementById('convertedAmount');
+
+    convertButton.addEventListener('click', convertCurrency);
+    resetButton.addEventListener('click', resetConverter);
+
+    function convertCurrency() {
+      const amount = parseFloat(amountInput.value);
+      const fromCurrency = fromCurrencySelect.value;
+      const toCurrency = toCurrencySelect.value;
+
+      // Replace the following with an API call to get the actual conversion rate
+      const conversionRates = {
+        USD: { EUR: 0.92, GBP: 0.82 },
+        EUR: { USD: 1.09, GBP: 0.89 },
+        GBP: { USD: 1.22, EUR: 1.12 }
+      };
+
+      if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+
+      if (!conversionRates[fromCurrency] || !conversionRates[fromCurrency][toCurrency]) {
+        alert('Conversion not supported.');
+        return;
+      }
+
+      const convertedAmount = amount * conversionRates[fromCurrency][toCurrency];
+      convertedAmountDisplay.textContent = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`;
+    }
+
+    function resetConverter() {
+      amountInput.value = '';
+      fromCurrencySelect.value = 'USD';
+      toCurrencySelect.value = 'EUR';
+      convertedAmountDisplay.textContent = '';
+    }
+  </script>
+</body>
+</html>
